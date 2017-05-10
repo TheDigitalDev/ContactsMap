@@ -25,8 +25,8 @@ public class GenerateGrid {
                  gridArray[x][y] = Character.toString('-');
 
 
-         int playerCornerX = calculateCornerXOfChunk(playerChunk) / 16;
-         int playerCornerZ = calculateCornerZOfChunk(playerChunk) / 16;
+         int playerCornerX = calculateCorner(playerChunk) / 16;
+         int playerCornerZ = calculateCorner(playerChunk) / 16;
 
          // x10z10 is origin
         gridArray[10][10] = "^";
@@ -40,6 +40,11 @@ public class GenerateGrid {
          // Then align it to the origin by adding 10 each.
 
          for(int i = 0; i < chunkList.size(); i++){
+          for(int i = 0; i < chunkList.size(); i++){
+           	calcChunkX = ((calculateCorner(chunkList.get(i)) / 16) - playerCornerX) + 10;
+           }
+
+          /*
             calcChunkX = calculateCornerXOfChunk(chunkList.get(i));
             calcChunkZ = calculateCornerZOfChunk(chunkList.get(i));
 
@@ -52,7 +57,7 @@ public class GenerateGrid {
 
             calcChunkX += 10;
             calcChunkZ += 10;
-
+          */
             gridArray[calcChunkX][calcChunkZ] = "+";
 
             // Once we have the entire map stored in the array send it
@@ -64,12 +69,13 @@ public class GenerateGrid {
 
     private void sendGridMap(Player p){
 
-         // Z = Y in this case, but in order to be consistent I kept it at Z
-        for(int z = 0; z < 20; z++) {
+         String gridRow;
+         StringBuilder sb = new StringBuilder(gridRow);
 
+         // Z = Y in this case, but in order to be consistent I kept it at Z
+         for(int z = 0; z < 20; z++) {
             // The row will be appended into a string then sent
-            String gridRow = "";
-            StringBuilder sb = new StringBuilder(gridRow);
+            gridRow = "";
             for (int x = 0; x < 20; x++) {
                 sb.append(gridArray[x][z]);
             }
@@ -78,6 +84,11 @@ public class GenerateGrid {
         }
     }
 
+    calculateCorner(Chunk c){
+         // Untested code, meant to replace chunk.getX
+	        return c.getX() - (c.getX() % 16)
+    }
+    /* TEMPORARILY COMMENTED OUT FOR OPTIMIZATION TEST CODE(Can't test it ATM will do at home)
     // North of chunk
     private int calculateCornerXOfChunk(Chunk chunk){
         int x = chunk.getX();
@@ -90,7 +101,7 @@ public class GenerateGrid {
         int z = chunk.getZ();
         return z << 4;
     }
-
+    */ 
 }
 
 
