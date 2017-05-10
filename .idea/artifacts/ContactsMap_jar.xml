@@ -1,0 +1,9 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="ContactsMap:jar">
+    <output-path>$PROJECT_DIR$/output</output-path>
+    <root id="archive" name="ContactsMap.jar">
+      <element id="module-output" name="ContactsMap" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/../../SpigotDev/spigot-1.10.2-R0.1-SNAPSHOT-latest.jar" path-in-jar="/" />
+    </root>
+  </artifact>
+</component>

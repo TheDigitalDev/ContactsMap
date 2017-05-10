@@ -1,0 +1,10 @@
+depend: [Movecraft]
+name: ContactsMap
+version: 0
+author: TheDigitalDev
+main: me.TheDigitalDev.ContactsMap.Main
+commands:
+  contactsmap:
+    description: Visualize contacts
+    usage: /contactsmap
+
