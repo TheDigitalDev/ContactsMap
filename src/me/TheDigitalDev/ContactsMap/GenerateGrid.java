@@ -39,10 +39,13 @@ public class GenerateGrid {
          // After that make it relative to the player's position by subtracting the player's chunk by the calculated chunk
          // Then align it to the origin by adding 10 each.
 
-         for(int i = 0; i < chunkList.size(); i++){
-          for(int i = 0; i < chunkList.size(); i++){
+	 for(int i = 0; i < chunkList.size(); i++){
            	calcChunkX = ((calculateCorner(chunkList.get(i)) / 16) - playerCornerX) + 10;
-           }
+           	calcChunkZ = ((calculateCorner(chunkList.get(i)) / 16) - playerCornerZ) + 10;
+		
+		gridArray[calcChunkX][calcChunkZ] = "+";
+
+         }
 
           /*
             calcChunkX = calculateCornerXOfChunk(chunkList.get(i));
@@ -58,7 +61,6 @@ public class GenerateGrid {
             calcChunkX += 10;
             calcChunkZ += 10;
           */
-            gridArray[calcChunkX][calcChunkZ] = "+";
 
             // Once we have the entire map stored in the array send it
             sendGridMap(p);
@@ -85,8 +87,8 @@ public class GenerateGrid {
     }
 
     calculateCorner(Chunk c){
-         // Untested code, meant to replace chunk.getX
-	        return c.getX() - (c.getX() % 16)
+         // Untested code, meant to replace the old chunky calculateCornerXYOfChunk functions
+	 return c.getX() - (c.getX() % 16)
     }
     /* TEMPORARILY COMMENTED OUT FOR OPTIMIZATION TEST CODE(Can't test it ATM will do at home)
     // North of chunk
