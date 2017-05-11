@@ -6,5 +6,5 @@ main: me.TheDigitalDev.ContactsMap.Main
 commands:
   contactsmap:
     description: Visualize contacts
-    usage: /contactsmap
+    usage: /contactsmap [Zoom Setting 1/2]
 

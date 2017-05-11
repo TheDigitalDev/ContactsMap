@@ -41,13 +41,22 @@ public class Main extends JavaPlugin{
 
     public boolean onCommand(CommandSender cmdSender, Command cmd, String label, String[] args) {
         if(label.equalsIgnoreCase("contactsmap")){
-            generateContactsMap(cmdSender);
+
+            if(args.length != 0) {
+                if (args[0].equalsIgnoreCase("1") || args[0].equalsIgnoreCase("2")) {
+                    generateContactsMap(cmdSender, Integer.valueOf(args[0]));
+                    return true;
+                }
+            }
+            generateContactsMap(cmdSender, 1);
             return true;
         }
-        return false;
+
+        return true;
     }
 
-    private void generateContactsMap(CommandSender cmdSender){
+
+    private void generateContactsMap(CommandSender cmdSender, int zoomSettings){
 
         // First let's get all the player's contacts through the method getPlayerContacts
         if(cmdSender != Bukkit.getConsoleSender() && CraftManager.getInstance().getCraftByPlayerName(cmdSender.getName()) != null) {
@@ -67,8 +76,9 @@ public class Main extends JavaPlugin{
 
             // Pass it onto generatemap, which will get the chunks, find their corner coordinates(modulus operator yay actual application) and use it to plot it on the message map
             gg.generatemap(CraftManager.getInstance().getCraftByPlayer(p).getW().getChunkAt(
-                    (int) getMidCoordinatesX(CraftManager.getInstance().getCraftByPlayer(p)), (int) getMidCoordinatesZ(CraftManager.getInstance().getCraftByPlayer(p))),
-                    contactAirshipChunk, p);
+                      (int) getMidCoordinatesX(CraftManager.getInstance().getCraftByPlayer(p))
+                    , (int) getMidCoordinatesZ(CraftManager.getInstance().getCraftByPlayer(p)))
+                    , contactAirshipChunk, p, zoomSettings);
 
         }
     }
