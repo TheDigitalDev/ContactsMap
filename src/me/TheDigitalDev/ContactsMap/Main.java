@@ -29,6 +29,9 @@ public class Main extends JavaPlugin{
 
     private long tpos;
 
+    Craft tcraft; // Iterated craft
+    private Craft ccraft; // Sender's craft
+
     @Override
     public void onEnable(){
 
@@ -91,46 +94,51 @@ public class Main extends JavaPlugin{
 
         // This part is modified code of the contacts from CommandListener class(Line 306), written by BaccaYarro. Once again, NOT MY ORIGINAL CODE(This includes calc for getMidCoordinatesX/Z functions)
 
-        int craftCount;
+        Craft[] crafts;
 
         if (CraftManager.getInstance().getCraftsInWorld(p.getWorld()) != null) {
 
-            Craft[] crafts;
+            ccraft = CraftManager.getInstance().getCraftByPlayer(p);
 
-            crafts = CraftManager.getInstance().getCraftsInWorld(p.getWorld());
-            craftCount = crafts.length;
+            crafts = CraftManager.getInstance().getCraftsInWorld(CraftManager.getInstance().getCraftByPlayer(p).getW());
 
-            Craft tcraft = CraftManager.getInstance().getCraftByPlayer(p);
-            for (int i = 0; i < craftCount; i++) {
-                Craft craft = crafts[i];
-                if (craft != null) {
+            for (int i = 0; i < crafts.length; ++i) {
+                Craft tcraft = crafts[i];
+                if (tcraft != null) {
 
-                    long cposx = getMidCoordinatesX(craft);
-                    long cposy = getMidCoordinatesY(craft);
-                    long cposz = getMidCoordinatesZ(craft);
 
-                    long tposx = getMidCoordinatesX(tcraft);
-                    long tposy = getMidCoordinatesY(tcraft);
-                    long tposz = getMidCoordinatesZ(tcraft);
-
+                    long cposx = (long)(ccraft.getMaxX() + ccraft.getMinX());
+                    long cposy = (long)(ccraft.getMaxY() + ccraft.getMinY());
+                    long cposz = (long)(ccraft.getMaxZ() + ccraft.getMinZ());
+                    cposx >>= 1;
+                    cposy >>= 1;
+                    cposz >>= 1;
+                    long tposx = (long)(tcraft.getMaxX() + tcraft.getMinX());
+                    long tposy = (long)(tcraft.getMaxY() + tcraft.getMinY());
+                    long tposz = (long)(tcraft.getMaxZ() + tcraft.getMinZ());
+                    tposx >>= 1;
+                    tposy >>= 1;
+                    tposz >>= 1;
                     long diffx = cposx - tposx;
                     long diffy = cposy - tposy;
                     long diffz = cposz - tposz;
-
                     long distsquared = Math.abs(diffx) * Math.abs(diffx);
                     distsquared += Math.abs(diffy) * Math.abs(diffy);
                     distsquared += Math.abs(diffz) * Math.abs(diffz);
-                    long detectionRange;
+                    long detectionRange = 0L;
 
-                    if (tposy > 65L) {
-                        detectionRange = (long) (Math.sqrt((double) tcraft.getOrigBlockCount()) * tcraft.getType().getDetectionMultiplier());
+
+                    if(tposy > (long)tcraft.getW().getSeaLevel()) {
+                        detectionRange = (long)(Math.sqrt((double)tcraft.getOrigBlockCount()) * tcraft.getType().getDetectionMultiplier());
                     } else {
-                        detectionRange = (long) (Math.sqrt((double) tcraft.getOrigBlockCount()) * tcraft.getType().getUnderwaterDetectionMultiplier());
+                        detectionRange = (long)(Math.sqrt((double)tcraft.getOrigBlockCount()) * tcraft.getType().getUnderwaterDetectionMultiplier());
                     }
 
 
-                    if (distsquared < detectionRange * detectionRange && tcraft.getNotificationPlayer() != craft.getNotificationPlayer()) {
-                        playerContacts.add(craft);
+                    p.sendMessage("dr " + detectionRange * detectionRange + " distSq" + distsquared);
+                    if(distsquared < detectionRange * detectionRange && tcraft.getNotificationPlayer() != ccraft.getNotificationPlayer()) {
+                        p.sendMessage(tcraft.getNotificationPlayer() + " " + ccraft.getNotificationPlayer());
+                        playerContacts.add(tcraft);
                     }
 
                 }

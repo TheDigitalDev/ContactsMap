@@ -14,8 +14,8 @@ import java.util.*;
 public class GenerateGrid {
 
 
-     int chunkMultiplier = 1; // Zoom settings
-     int chunkSize = 16;
+     private int chunkMultiplier = 1; // Zoom settings
+     private int chunkSize = 16;
 
     // [x][z]
     private final String[][] gridArray = new String[21][20];
@@ -50,8 +50,7 @@ public class GenerateGrid {
            	calcChunkX = ((calculateCornerX(chunkList.get(i)) / chunkMultiplier) - playerCornerX) + 10;
            	calcChunkZ = ((calculateCornerZ(chunkList.get(i)) / chunkMultiplier) - playerCornerZ) + 10;
 
-           	p.sendMessage("cX" + calcChunkX + " cZ" + calcChunkZ);
-            if(calcChunkX < 21 && calcChunkZ < 20 && calcChunkX > -1 && calcChunkZ > -1) {
+           	if(calcChunkX < 21 && calcChunkZ < 20 && calcChunkX > -1 && calcChunkZ > -1) {
                 gridArray[calcChunkX][calcChunkZ] = "+";
             }
         }
